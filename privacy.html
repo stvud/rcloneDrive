@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy &mdash; rcloneDrive</title>
+  <meta name="description" content="Privacy Policy for rcloneDrive personal Google Drive client. Compliant with Google API Services User Data Policy and Limited Use requirements.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    code, pre, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="assets/logo-120.png" alt="rcloneDrive Logo" class="w-8 h-8 rounded-lg shadow border border-slate-700">
+        <span class="text-base font-bold text-white tracking-tight">rcloneDrive</span>
+      </a>
+      <nav class="flex items-center gap-4 text-xs font-semibold text-slate-300">
+        <a href="index.html" class="hover:text-white transition-colors">&larr; Back to Home</a>
+        <a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow py-12 px-4 sm:px-6">
+    <article class="max-w-3xl mx-auto bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:p-10 shadow-xl">
+      
+      <!-- Policy Header -->
+      <div class="border-b border-slate-800 pb-6 mb-8">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-sky-500/10 text-sky-300 text-xs font-semibold uppercase tracking-wider mb-3 border border-sky-500/20">
+          Official Privacy Policy
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Privacy Policy</h1>
+        <p class="text-xs text-slate-400 mt-2">
+          Effective Date: October 21, 2026 &bull; Last Updated: October 21, 2026
+        </p>
+      </div>
+
+      <!-- Mandatory Google Compliance Box -->
+      <div class="mb-8 p-5 rounded-xl bg-sky-950/50 border border-sky-600/40 text-sky-200">
+        <h2 class="text-sm font-bold text-white flex items-center gap-2 mb-2">
+          <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          Google API Services User Data Policy Disclosure
+        </h2>
+        <p class="text-xs leading-relaxed">
+          <strong>rcloneDrive's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener" class="underline font-semibold text-white hover:text-sky-300">Google API Services User Data Policy</a>, including the Limited Use requirements.</strong>
+        </p>
+      </div>
+
+      <!-- Sections -->
+      <div class="space-y-8 text-sm text-slate-300 leading-relaxed">
+        
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">1. Overview and Architecture</h2>
+          <p>
+            <strong>rcloneDrive</strong> is a personal, client-side configuration designed for interacting with Google Drive via the open-source command-line software <a href="https://rclone.org" target="_blank" rel="noopener" class="text-sky-400 underline">Rclone</a>. 
+          </p>
+          <p class="mt-2">
+            This project operates with a <strong>strictly decentralized, zero-server architecture</strong>. There is no web service, centralized database, backend server, analytics agent, or intermediate proxy operated by rcloneDrive. All communication occurs directly and securely between your personal device and Google's official API servers.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">2. Information We Access</h2>
+          <p>When you configure Rclone to connect to your Google Drive account, the application requests access to Google APIs via OAuth 2.0:</p>
+          <ul class="list-disc pl-5 mt-2 space-y-1.5 text-slate-300">
+            <li><strong>OAuth Authentication Credentials:</strong> Temporary access tokens and persistent refresh tokens granted by Google during the OAuth consent flow.</li>
+            <li><strong>Google Drive Files &amp; Metadata:</strong> File content, folder structures, file names, file sizes, MIME types, and modification timestamps contained within your Google Drive account necessary to perform user-instructed file synchronization.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">3. How Information Is Used</h2>
+          <p>Information accessed through the Google Drive API is used solely for the following explicit user-directed purposes:</p>
+          <ul class="list-disc pl-5 mt-2 space-y-1.5 text-slate-300">
+            <li>To list files and directories when running inspection commands (e.g., <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-sky-300">rclone ls</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-sky-300">rclone lsd</code>).</li>
+            <li>To upload, download, and copy files between your local system and Google Drive as initiated by you (e.g., <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-sky-300">rclone copy</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-sky-300">rclone sync</code>).</li>
+            <li>To mount Google Drive as a local filesystem volume if using <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-sky-300">rclone mount</code>.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">4. Storage and Data Retention</h2>
+          <p>
+            <strong>Local Storage Only:</strong> All OAuth tokens, credentials, and downloaded files are stored strictly on your local device (in your local Rclone configuration file, typically located at <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-emerald-300 font-mono">~/.config/rclone/rclone.conf</code> on Linux/macOS or <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-emerald-300 font-mono">%APPDATA%\rclone\rclone.conf</code> on Windows).
+          </p>
+          <p class="mt-2">
+            No file contents, user metadata, or authentication credentials ever touch, pass through, or persist on any server owned or operated by this project or any third party.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">5. Third-Party Sharing and Disclosure</h2>
+          <p>
+            We <strong>do not</strong> sell, rent, trade, lease, or transfer your personal data or Google Drive contents to any third party.
+          </p>
+          <p class="mt-2">
+            All API calls travel exclusively over encrypted Transport Layer Security (HTTPS/TLS) directly from your computer to Google APIs (<code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-sky-300">https://www.googleapis.com</code>).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">6. How to Revoke Access or Delete Data</h2>
+          <p>You maintain full control over your Google account and credentials at all times:</p>
+          <ul class="list-disc pl-5 mt-2 space-y-2 text-slate-300">
+            <li>
+              <strong>Revoke OAuth Access via Google:</strong> You can immediately disconnect this application from your Google account at any time by visiting <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener" class="text-sky-400 underline">Google Account Security &gt; Third-party apps with account access</a> and clicking <em>Remove Access</em>.
+            </li>
+            <li>
+              <strong>Delete Local Credentials:</strong> You can permanently delete all locally stored access tokens by running <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-sky-300 font-mono">rclone config delete &lt;remote_name&gt;</code> in your terminal or by deleting your <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-sky-300 font-mono">rclone.conf</code> configuration file.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">7. Security Measures</h2>
+          <p>
+            Rclone supports client-side configuration encryption. You may protect your local configuration and OAuth tokens with an encryption password by running <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-sky-300 font-mono">rclone config</code> and choosing the encryption password option.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-bold text-white mb-2">8. Contact Information</h2>
+          <p>
+            If you have any questions or concerns regarding this Privacy Policy or your data, you may open an issue on the project's GitHub repository or contact the project maintainer directly through your configured developer contact email.
+          </p>
+        </section>
+
+      </div>
+
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-8 text-xs text-slate-500 text-center">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex items-center justify-center gap-4 mb-2">
+        <a href="index.html" class="text-slate-400 hover:text-white">Home</a>
+        <span>&bull;</span>
+        <a href="privacy.html" class="text-slate-300 font-medium">Privacy Policy</a>
+        <span>&bull;</span>
+        <a href="terms.html" class="text-slate-400 hover:text-white">Terms of Service</a>
+      </div>
+      <p>&copy; 2026 rcloneDrive. Open-source personal client configuration.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="55%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <!-- Sync Glow Gradient -->
+    <linearGradient id="syncGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+
+    <!-- Cloud Gradient -->
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- App Rounded Squircle Background -->
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="url(#bgGrad)" filter="url(#dropShadow)" />
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="4" />
+
+  <!-- Circular Sync Arrows Ring -->
+  <g transform="translate(256, 240)">
+    <!-- Top Arc Arrow -->
+    <path d="M -130,0 A 130 130 0 0 1 115,-60" fill="none" stroke="url(#syncGrad)" stroke-width="20" stroke-linecap="round" filter="url(#softGlow)" />
+    <polygon points="120,-85 140,-45 95,-55" fill="#38bdf8" />
+
+    <!-- Bottom Arc Arrow -->
+    <path d="M 130,0 A 130 130 0 0 1 -115,60" fill="none" stroke="url(#syncGrad)" stroke-width="20" stroke-linecap="round" filter="url(#softGlow)" />
+    <polygon points="-120,85 -140,45 -95,55" fill="#60a5fa" />
+  </g>
+
+  <!-- Stylized Cloud Emblem in Center -->
+  <g transform="translate(256, 244)" filter="url(#dropShadow)">
+    <!-- Cloud Path -->
+    <path d="M -75,45 
+             L 75,45 
+             A 35 35 0 0 0 85,-20 
+             A 30 30 0 0 0 50,-45 
+             A 52 52 0 0 0 -45,-42 
+             A 36 36 0 0 0 -85,15 
+             A 32 32 0 0 0 -75,45 Z" 
+          fill="url(#cloudGrad)" />
+    
+    <!-- Central Rclone / Drive Fast-Sync Chevron / Node -->
+    <path d="M -26,10 L 0,-16 L 26,10" fill="none" stroke="#0284c7" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="0" cy="18" r="6" fill="#0369a1" />
+  </g>
+</svg>

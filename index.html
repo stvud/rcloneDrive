@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rcloneDrive &mdash; Personal Google Drive Client for Rclone</title>
+  <meta name="description" content="Secure, transparent personal OAuth client configuration for syncing Google Drive with Rclone.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/logo-120.png">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    code, pre, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .gradient-glow {
+      background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-sky-950/70 border-b border-sky-800/40 text-xs py-2 px-4 text-center text-sky-200 flex items-center justify-center gap-2">
+    <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-sky-500/20 text-sky-300 border border-sky-400/30">OAuth Ready</span>
+    <span>Configured for Google Cloud Console OAuth Consent Screen &amp; GitHub Pages</span>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="assets/logo-120.png" alt="rcloneDrive Logo" class="w-9 h-9 rounded-xl shadow-md border border-slate-700/60 group-hover:scale-105 transition-transform duration-200">
+        <div class="flex flex-col">
+          <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-sky-300 bg-clip-text text-transparent">rcloneDrive</span>
+          <span class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Google Drive &times; Rclone</span>
+        </div>
+      </a>
+      
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#oauth-helper" class="text-sky-400 hover:text-sky-300 flex items-center gap-1.5 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+          Google OAuth Links
+        </a>
+        <a href="#features" class="hover:text-white transition-colors">Features</a>
+        <a href="#setup-guide" class="hover:text-white transition-colors">Rclone Setup</a>
+        <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#oauth-helper" class="text-xs font-semibold px-3.5 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-white shadow-lg shadow-sky-500/20 transition-all">
+          Get OAuth Links
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-grow">
+    <section class="relative pt-16 pb-20 overflow-hidden gradient-glow">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-medium text-slate-300 mb-6 shadow-inner">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Personal Google Drive Client Configuration
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+          Private, Direct Sync for <br class="hidden sm:inline">
+          <span class="bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">Google Drive &amp; Rclone</span>
+        </h1>
+
+        <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-300 mb-10 leading-relaxed">
+          A transparent, personal OAuth client configuration designed for the open-source <a href="https://rclone.org" target="_blank" rel="noopener" class="text-sky-400 underline decoration-sky-400/40 hover:decoration-sky-300">Rclone</a> command line tool. All authentication tokens and files remain strictly on your local device.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="#oauth-helper" class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold shadow-xl shadow-sky-500/25 flex items-center gap-2 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            Generate Google OAuth Links
+          </a>
+          <a href="privacy.html" class="px-6 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 font-semibold border border-slate-700/80 transition-all flex items-center gap-2">
+            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            Review Privacy Policy
+          </a>
+        </div>
+
+        <!-- Quick Specs Badges -->
+        <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-8 border-t border-slate-800/80 text-left">
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">Architecture</div>
+            <div class="text-sm font-bold text-slate-100 mt-0.5">100% Client-Side</div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">Intermediate Servers</div>
+            <div class="text-sm font-bold text-emerald-400 mt-0.5">Zero (None)</div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">Credential Storage</div>
+            <div class="text-sm font-bold text-slate-100 mt-0.5">Local Encrypted</div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">Google Policy</div>
+            <div class="text-sm font-bold text-sky-400 mt-0.5">Limited Use Compliant</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Interactive Google OAuth Link Generator Section -->
+    <section id="oauth-helper" class="py-16 bg-slate-900/80 border-y border-slate-800">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-sky-500/10 text-sky-300 text-xs font-semibold uppercase tracking-wider mb-2 border border-sky-500/20">
+            Google Cloud Console Assistant
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+            OAuth Consent Screen Link Generator
+          </h2>
+          <p class="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+            Enter your GitHub username and repository name below. This tool instantly generates the exact URLs and domains required by the Google Cloud Console OAuth consent screen.
+          </p>
+        </div>
+
+        <!-- Interactive Form Card -->
+        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500"></div>
+
+          <!-- Input fields -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div>
+              <label for="gh-username" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                GitHub Username / Organization
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-sm">@</span>
+                <input type="text" id="gh-username" value="stvud" placeholder="your-github-username" 
+                       class="w-full pl-8 pr-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white font-mono text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors">
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">The GitHub account where you deploy GitHub Pages.</p>
+            </div>
+
+            <div>
+              <label for="gh-repo" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                Repository Name
+              </label>
+              <div class="relative">
+                <input type="text" id="gh-repo" value="rclonedrive" placeholder="rclonedrive" 
+                       class="w-full px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white font-mono text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors">
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">The name of your GitHub repository.</p>
+            </div>
+          </div>
+
+          <!-- Generated Links Matching Google Cloud Console -->
+          <div class="space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Google Cloud Console Fields (1-Click Copy)
+            </h3>
+
+            <!-- 1. Application home page -->
+            <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                  Application home page
+                </label>
+                <button onclick="copyToClipboard('out-homepage', this)" class="text-xs text-sky-400 hover:text-sky-300 font-semibold px-2.5 py-1 rounded bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition-all flex items-center gap-1">
+                  <span>Copy</span>
+                </button>
+              </div>
+              <div id="out-homepage" class="font-mono text-xs text-sky-200 break-all select-all py-1">https://username.github.io/rclonedrive/</div>
+              <div class="text-[11px] text-slate-500">Provide users a link to your home page</div>
+            </div>
+
+            <!-- 2. Application privacy policy link -->
+            <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                  Application privacy policy link
+                </label>
+                <button onclick="copyToClipboard('out-privacy', this)" class="text-xs text-sky-400 hover:text-sky-300 font-semibold px-2.5 py-1 rounded bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition-all flex items-center gap-1">
+                  <span>Copy</span>
+                </button>
+              </div>
+              <div id="out-privacy" class="font-mono text-xs text-sky-200 break-all select-all py-1">https://username.github.io/rclonedrive/privacy.html</div>
+              <div class="text-[11px] text-slate-500">Provide users a link to your public privacy policy</div>
+            </div>
+
+            <!-- 3. Application Terms of Service link -->
+            <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                  Application Terms of Service link
+                </label>
+                <button onclick="copyToClipboard('out-terms', this)" class="text-xs text-sky-400 hover:text-sky-300 font-semibold px-2.5 py-1 rounded bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition-all flex items-center gap-1">
+                  <span>Copy</span>
+                </button>
+              </div>
+              <div id="out-terms" class="font-mono text-xs text-sky-200 break-all select-all py-1">https://username.github.io/rclonedrive/terms.html</div>
+              <div class="text-[11px] text-slate-500">Provide users a link to your public Terms of Service</div>
+            </div>
+
+            <!-- 4. Authorised domains -->
+            <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                  Authorised domains
+                </label>
+                <button onclick="copyToClipboard('out-domain', this)" class="text-xs text-sky-400 hover:text-sky-300 font-semibold px-2.5 py-1 rounded bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition-all flex items-center gap-1">
+                  <span>Copy</span>
+                </button>
+              </div>
+              <div id="out-domain" class="font-mono text-xs text-sky-200 break-all select-all py-1">github.io</div>
+              <div class="text-[11px] text-slate-500">Enter without http/https. Google accepts <code class="text-slate-400">github.io</code> directly.</div>
+            </div>
+
+            <!-- 5. App Logo Download for Google Console -->
+            <div class="p-4 bg-gradient-to-r from-slate-900 to-sky-950/40 rounded-xl border border-sky-800/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <img src="assets/logo-120.png" alt="Google OAuth 120x120 Logo" class="w-14 h-14 rounded-xl border border-slate-700 shadow-md">
+                <div>
+                  <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span>OAuth App Logo</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono">120 &times; 120 px</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Google requires square PNG under 1MB. Ready for direct upload.</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                <a href="assets/logo-120.png" download="rcloneDrive-logo-120.png" class="flex-1 sm:flex-none text-center text-xs font-semibold px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-white shadow transition-all flex items-center justify-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                  Download Logo (PNG)
+                </a>
+                <a href="assets/logo.svg" download="rcloneDrive-logo.svg" class="text-xs font-medium px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all">
+                  SVG
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Key Principles & Features -->
+    <section id="features" class="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">How rcloneDrive Works</h2>
+        <p class="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+          Architected specifically for private, high-performance file synchronization with zero intermediate infrastructure.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all flex flex-col">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center mb-4 border border-sky-500/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Zero Intermediate Servers</h3>
+          <p class="text-sm text-slate-400 leading-relaxed flex-grow">
+            Your local Rclone client talks directly to Google's official API servers (<code class="text-xs text-sky-300">googleapis.com</code>) over encrypted TLS. No telemetry, proxy, or server ever intercepts your traffic.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all flex flex-col">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4 border border-emerald-500/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Local Credential Storage</h3>
+          <p class="text-sm text-slate-400 leading-relaxed flex-grow">
+            Your OAuth Client ID, Secret, and tokens reside solely inside your local configuration file (<code class="text-xs text-emerald-300">~/.config/rclone/rclone.conf</code>) on your own machine.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all flex flex-col">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-4 border border-indigo-500/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Dedicated API Quota</h3>
+          <p class="text-sm text-slate-400 leading-relaxed flex-grow">
+            By using your own Google Cloud OAuth credentials rather than shared defaults, you avoid "rate limit exceeded" errors and enjoy fast, dedicated upload/download throughput.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Google OAuth Scopes Transparency -->
+    <section class="py-12 bg-slate-900/40 border-t border-slate-800">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Google API Scopes Requested</h2>
+        <p class="text-sm text-slate-400 mb-6">
+          To perform backup and synchronization tasks requested by the user, Rclone utilizes the following Google Drive OAuth scopes:
+        </p>
+
+        <div class="space-y-3 font-mono text-xs">
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-sky-400 font-semibold">https://www.googleapis.com/auth/drive</span>
+              <p class="text-[12px] text-slate-400 font-sans mt-0.5">Full access to create, read, update, and delete files in Google Drive for comprehensive backup &amp; sync operations.</p>
+            </div>
+            <span class="self-start sm:self-center px-2 py-1 rounded bg-slate-800 text-slate-300 text-[11px] whitespace-nowrap">Primary Scope</span>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-slate-300 font-semibold">https://www.googleapis.com/auth/drive.file</span>
+              <p class="text-[12px] text-slate-400 font-sans mt-0.5">Alternative restricted scope: Only access files and folders created or opened by this specific app.</p>
+            </div>
+            <span class="self-start sm:self-center px-2 py-1 rounded bg-slate-800 text-slate-400 text-[11px] whitespace-nowrap">Optional Scope</span>
+          </div>
+        </div>
+
+        <div class="mt-4 p-4 rounded-xl bg-sky-950/30 border border-sky-800/40 text-xs text-sky-200 leading-relaxed">
+          <strong>Google API Limited Use Notice:</strong> rcloneDrive strictly adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener" class="underline font-semibold hover:text-white">Google API Services User Data Policy</a>, including the Limited Use requirements.
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Setup Guide for Rclone -->
+    <section id="setup-guide" class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Configuring Rclone with Your OAuth Client</h2>
+        <p class="text-slate-400 text-sm max-w-lg mx-auto mt-2">
+          Step-by-step instructions to link your private Google Drive client with the Rclone CLI.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Step 1 -->
+        <div class="p-5 bg-slate-900 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="w-6 h-6 rounded-full bg-sky-500 text-white font-bold text-xs flex items-center justify-center">1</span>
+            <h3 class="text-sm font-bold text-white">Create OAuth Client ID in Google Cloud</h3>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed ml-9">
+            In your Google Cloud Console project, go to <strong>APIs &amp; Services &gt; Credentials</strong>, click <strong>Create Credentials &gt; OAuth client ID</strong>, choose Application type: <strong>Desktop app</strong>, name it <code class="text-sky-300">rcloneDrive</code>, and click <strong>Create</strong>. Copy your Client ID and Client Secret.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="p-5 bg-slate-900 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="w-6 h-6 rounded-full bg-sky-500 text-white font-bold text-xs flex items-center justify-center">2</span>
+            <h3 class="text-sm font-bold text-white">Run Rclone Configuration</h3>
+          </div>
+          <div class="ml-9">
+            <p class="text-xs text-slate-400 mb-2">Open your terminal and run the interactive setup:</p>
+            <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs text-sky-300 font-mono overflow-x-auto">rclone config</pre>
+            <p class="text-xs text-slate-400 mt-2">
+              Select <code class="text-slate-300">n</code> for New remote &rarr; Name it <code class="text-slate-300">gdrive</code> &rarr; Select <code class="text-slate-300">drive</code> (Google Drive) as the storage type &rarr; Paste your personal <strong>Client ID</strong> and <strong>Client Secret</strong> when prompted.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="p-5 bg-slate-900 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="w-6 h-6 rounded-full bg-sky-500 text-white font-bold text-xs flex items-center justify-center">3</span>
+            <h3 class="text-sm font-bold text-white">Authorize &amp; Start Syncing</h3>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed ml-9">
+            Rclone will open your web browser to Google's OAuth consent screen. Sign in with your Google account and grant access. Test your connection with:
+          </p>
+          <pre class="ml-9 mt-2 bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs text-emerald-400 font-mono overflow-x-auto">rclone lsd gdrive:</pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-12 text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3">
+          <img src="assets/logo-120.png" alt="rcloneDrive Logo" class="w-7 h-7 rounded-lg">
+          <div>
+            <div class="font-bold text-slate-200">rcloneDrive</div>
+            <div class="text-[11px] text-slate-500">Personal Google Drive Client for Rclone</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-6 font-medium">
+          <a href="index.html" class="hover:text-white transition-colors">Home</a>
+          <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a>
+          <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener" class="hover:text-white transition-colors">Google User Data Policy</a>
+          <a href="https://rclone.org" target="_blank" rel="noopener" class="hover:text-white transition-colors">Rclone Official</a>
+        </div>
+      </div>
+
+      <div class="mt-8 pt-8 border-t border-slate-900 text-center text-[11px] text-slate-500 leading-relaxed">
+        <p>rcloneDrive is an independent open-source configuration helper. Google Drive&trade; is a trademark of Google LLC. Rclone is an open-source project by Nick Craig-Wood and contributors. This project is not affiliated with or endorsed by Google LLC.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script for Dynamic URL Generation and 1-Click Copy -->
+  <script>
+    const userIn = document.getElementById('gh-username');
+    const repoIn = document.getElementById('gh-repo');
+    const outHome = document.getElementById('out-homepage');
+    const outPrivacy = document.getElementById('out-privacy');
+    const outTerms = document.getElementById('out-terms');
+    const outDomain = document.getElementById('out-domain');
+
+    function updateUrls() {
+      const user = (userIn.value || 'username').trim().toLowerCase().replace(/^@/, '');
+      const repo = (repoIn.value || 'rclonedrive').trim().replace(/^\/+|\/+$/g, '');
+
+      const base = `https://${user}.github.io/${repo}/`;
+      outHome.textContent = base;
+      outPrivacy.textContent = `${base}privacy.html`;
+      outTerms.textContent = `${base}terms.html`;
+      outDomain.textContent = 'github.io';
+    }
+
+    userIn.addEventListener('input', updateUrls);
+    repoIn.addEventListener('input', updateUrls);
+    updateUrls();
+
+    function copyToClipboard(elementId, btn) {
+      const text = document.getElementById(elementId).textContent.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = `<span class="text-emerald-400 flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!</span>`;
+        btn.classList.add('border-emerald-500/50', 'bg-emerald-500/20');
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+          btn.classList.remove('border-emerald-500/50', 'bg-emerald-500/20');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy', err);
+      });
+    }
+  </script>
+</body>
+</html>
